@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OMGBeacons.iml" filepath="$PROJECT_DIR$/OMGBeacons.iml" />
+      <module fileurl="file://C:\Users\Sydney\Desktop\Beacons\OMGBeacons\OMGBeacons.iml" filepath="C:\Users\Sydney\Desktop\Beacons\OMGBeacons\OMGBeacons.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Sydney\Desktop\Beacons\OMGBeacons\app\app.iml" filepath="C:\Users\Sydney\Desktop\Beacons\OMGBeacons\app\app.iml" />
     </modules>
   </component>
 </project>
