@@ -77,12 +77,19 @@ public class MainActivity extends AppCompatActivity {
 
         final Button button  = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
+            boolean hasBeenClicked = false;
             @Override
             public void onClick(View view) {
-                button.setText("Actively searching for beacons!");
-//                if (!proximityManager.isScanning())
+                if(!hasBeenClicked) {
+                    button.setText("Actively searching for beacons!");
                     startScanning();
-//                }
+                    hasBeenClicked = true;
+                }
+                else if(hasBeenClicked){
+                    button.setText("Click To Search for Beacons");
+                    hasBeenClicked = false;
+                    onStop();
+                }
             }
         });
 
@@ -115,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
         return new SimpleIBeaconListener() {
             @Override
             public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
-                Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.toString(),
+                Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.getName(),
                         Toast.LENGTH_SHORT).show();
-                Log.i("Sample", "IBeacon discovered: " + ibeacon.toString());
+                Log.i("Sample", "IBeacon discovered: " + ibeacon.getName());
             }
         };
     }
