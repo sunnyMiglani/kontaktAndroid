@@ -55,6 +55,8 @@ public class UnityService extends IntentService {
         context.startService(intent);
     }
 
+
+    /* This is called by the default worker thread when the service is started */
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
