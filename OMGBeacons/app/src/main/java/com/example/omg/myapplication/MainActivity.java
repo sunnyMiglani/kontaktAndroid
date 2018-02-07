@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int MY_REQ_FINE_LOC = 1234;
 
+    // Proximity Manager is an entry point for all
+    // operations connected with ranging and monitoring
+    // BLE devices (iBeacons, Eddystones and Kontakt.io
+    // Beacon Pro secure profiles).
     private ProximityManager proximityManager;
 
 
@@ -48,15 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
         proximityManager = ProximityManagerFactory.create(this);
         proximityManager.setIBeaconListener(createIBeaconListener());
-        proximityManager.setEddystoneListener(createEddystoneListener());
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -112,16 +115,9 @@ public class MainActivity extends AppCompatActivity {
         return new SimpleIBeaconListener() {
             @Override
             public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
+                Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.toString(),
+                        Toast.LENGTH_SHORT).show();
                 Log.i("Sample", "IBeacon discovered: " + ibeacon.toString());
-            }
-        };
-    }
-
-    private EddystoneListener createEddystoneListener() {
-        return new SimpleEddystoneListener() {
-            @Override
-            public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-                Log.i("Sample", "Eddystone discovered: " + eddystone.toString());
             }
         };
     }
