@@ -20,15 +20,11 @@ import android.widget.Toast;
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerFactory;
-import com.kontakt.sdk.android.ble.manager.listeners.EddystoneListener;
 import com.kontakt.sdk.android.ble.manager.listeners.IBeaconListener;
-import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleEddystoneListener;
 import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleIBeaconListener;
 import com.kontakt.sdk.android.common.KontaktSDK;
 import com.kontakt.sdk.android.common.profile.IBeaconDevice;
 import com.kontakt.sdk.android.common.profile.IBeaconRegion;
-import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
-import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -120,11 +116,17 @@ public class MainActivity extends AppCompatActivity {
 
     private IBeaconListener createIBeaconListener() {
         return new SimpleIBeaconListener() {
-            @Override
+            @Override //This method is only called on First Discovery
             public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
                 Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.getName(),
                         Toast.LENGTH_SHORT).show();
                 Log.i("Sample", "IBeacon discovered: " + ibeacon.getName());
+            }
+
+            public void onIBeaconLost(IBeaconDevice ibeacon, IBeaconRegion region) {
+                Toast.makeText(getApplicationContext(), "IBeacon Lost: " + ibeacon.getName(),
+                        Toast.LENGTH_SHORT).show();
+                Log.i("Sample", "IBeacon Lost: " + ibeacon.getName());
             }
         };
     }
