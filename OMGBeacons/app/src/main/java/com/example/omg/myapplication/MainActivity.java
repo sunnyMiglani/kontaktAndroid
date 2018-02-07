@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -62,17 +63,32 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 
     @Override
     protected void onStart() {
+
         super.onStart();
-        startScanning();
-    }
+
+        final Button button  = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button.setText("Actively searching for beacons!");
+//                if (!proximityManager.isScanning())
+                    startScanning();
+//                }
+            }
+        });
+
+        }
 
     @Override
     protected void onStop() {
-        proximityManager.stopScanning();
+        if(proximityManager.isScanning())
+            proximityManager.stopScanning();
         super.onStop();
     }
 
