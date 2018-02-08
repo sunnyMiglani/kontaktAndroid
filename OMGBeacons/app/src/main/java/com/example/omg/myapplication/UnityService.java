@@ -16,10 +16,12 @@ public class UnityService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FOO = "com.example.omg.myapplication.action.FOO";
     private static final String ACTION_BAZ = "com.example.omg.myapplication.action.BAZ";
+    private static final String ACTION_SEND_UNITY = "com.example.omg.myapplication.action.SEND_UNITY";
 
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.example.omg.myapplication.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.example.omg.myapplication.extra.PARAM2";
+    private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
 
     public UnityService() {
         super("UnityService");
@@ -55,21 +57,23 @@ public class UnityService extends IntentService {
         context.startService(intent);
     }
 
+    public static void startActionSendUnity(Context context, String param1) {
+        Intent intent = new Intent(context, UnityService.class);
+        intent.setAction(ACTION_SEND_UNITY);
+        intent.putExtra(EXTRA_BEACON_NAME, param1);
+        context.startService(intent);
+    }
 
+
+    // This is where the work is performed
     /* This is called by the default worker thread when the service is started */
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
-            }
+            if (ACTION_SEND_UNITY.equals(action)) {
+                handleActionSendToUnity(intent);
+            } //else if
         }
     }
 
@@ -89,5 +93,9 @@ public class UnityService extends IntentService {
     private void handleActionBaz(String param1, String param2) {
         // TODO: Handle action Baz
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void handleActionSendToUnity(Intent intent) {
+        sendBroadcast(intent);
     }
 }

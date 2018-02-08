@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.getName(),
                         Toast.LENGTH_SHORT).show();
                 Log.i("Sample", "IBeacon discovered: " + ibeacon.getName());
+                //TODO Call the service
+                UnityService.startActionSendUnity(getApplicationContext(),ibeacon.getName());
             }
 
             public void onIBeaconLost(IBeaconDevice ibeacon, IBeaconRegion region) {
