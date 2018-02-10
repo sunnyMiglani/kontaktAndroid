@@ -34,3 +34,6 @@ dependencies {
 task createJar(type: Jar, dependsOn: 'assembleRelease') {
     from fileTree(dir: 'build/intermediates/classes/release')
 }
+task jar(type: Jar, dependsOn: 'assembleRelease') {
+    from fileTree(dir: 'build/intermediates/classes/release')
+}

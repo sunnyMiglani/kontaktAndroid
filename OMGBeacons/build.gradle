@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
@@ -11,17 +10,14 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
 allprojects {
     repositories {
         jcenter()
     }
 }
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-task createJar(type: Jar) {
-    from fileTree(dir: 'build/intermediates/classes/release')
+task createJarFile(type: Jar) {
+    from fileTree(dir: 'build/intermediates/classes/debug')
 }
