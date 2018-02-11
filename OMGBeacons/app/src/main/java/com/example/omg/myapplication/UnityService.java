@@ -3,6 +3,7 @@ package com.example.omg.myapplication;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -54,6 +55,7 @@ public class UnityService extends IntentService {
      * parameters.
      */
     private void handleActionSendToUnity(Intent intent) {
+        Log.i("tag", "Sending the following message :" + intent.getStringExtra(EXTRA_BEACON_NAME));
         sendBroadcast(intent);
     }
 }
