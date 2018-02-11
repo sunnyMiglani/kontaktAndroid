@@ -24,6 +24,7 @@
             android:exported="false" />
         <!-- Not clear if the receiver needs to be registered here aswell?? -->
         <receiver
+            android:enabled="true"
             android:name="com.example.omg.myapplication.UnityReceiver"
             android:exported="true">
             <intent-filter>
@@ -31,7 +32,7 @@
                     android:name="com.example.omg.myapplication.action.SEND_UNITY" >
                 </action>
             </intent-filter>
-          </receiver>
+        </receiver>
           <activity
               android:name=".MainActivity"
               android:label="@string/app_name"

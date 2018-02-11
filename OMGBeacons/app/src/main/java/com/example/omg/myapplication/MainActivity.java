@@ -1,6 +1,7 @@
 package com.example.omg.myapplication;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -122,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 Log.i("Sample", "IBeacon discovered: " + ibeacon.getName());
                 //TODO Call the service
-                UnityService.startActionSendUnity(getApplicationContext(),ibeacon.getName());
+                //UnityService.startActionSendUnity(getApplicationContext(),ibeacon.getName());
+                startService( new Intent(getApplicationContext(), UnityService.class) );
             }
 
             public void onIBeaconLost(IBeaconDevice ibeacon, IBeaconRegion region) {

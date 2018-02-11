@@ -3,6 +3,7 @@ package com.example.omg.myapplication;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 public class UnityReceiver extends BroadcastReceiver {
 
@@ -10,6 +11,10 @@ public class UnityReceiver extends BroadcastReceiver {
     private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
     public static String intentMessage = "EMPTYMESSAGE";
     public static int called = 0;
+
+
+    public UnityReceiver() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,9 +28,10 @@ public class UnityReceiver extends BroadcastReceiver {
         // an Intent broadcast.
     }
 
-    public static void createInstance()
-    {
-        if(instance ==  null)
-            instance = new UnityReceiver();
-    }
+        public static void createInstance() {
+            if (instance == null) {
+                instance = new UnityReceiver();
+            }
+        }
+
 }
