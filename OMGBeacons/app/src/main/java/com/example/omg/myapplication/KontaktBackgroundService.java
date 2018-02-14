@@ -33,8 +33,8 @@ public class KontaktBackgroundService extends Service {
     private final Handler handler = new Handler();
     private ProximityManager proximityManager;
     private boolean isRunning; // Flag indicating if service is already running.
-    //private Looper mServiceLooper;
-    //private ServiceHandler mServiceHandler;
+    private Looper mServiceLooper;
+    private ServiceHandler mServiceHandler;
 
     /* Constructor */
     public KontaktBackgroundService() {
@@ -49,11 +49,11 @@ public class KontaktBackgroundService extends Service {
 
         /* Create a new thread that runs in the background, this
          * will perform the work that we want the service to implement */
-      //  HandlerThread thread = new HandlerThread("BeaconScanService",
-      //          Process.THREAD_PRIORITY_BACKGROUND);
-      //  thread.start(); //Start the thread
-      //  mServiceLooper = thread.getLooper();
-      //  mServiceHandler = new ServiceHandler(mServiceLooper);
+        HandlerThread thread = new HandlerThread("BeaconScanService",
+                Process.THREAD_PRIORITY_BACKGROUND);
+        thread.start(); //Start the thread
+        mServiceLooper = thread.getLooper();
+        mServiceHandler = new ServiceHandler(mServiceLooper);
 
         setupProximityManager();
         isRunning = false;
@@ -121,14 +121,13 @@ public class KontaktBackgroundService extends Service {
     /* This method implements the behavior that we desire when a
     *  beacon has been discovered by the system */
     private void onDeviceDiscovered(IBeaconDevice device) {
-        Intent intent = new Intent();
-        intent.setAction(ACTION_BEACON_DISCOVERED);
-        intent.putExtra(EXTRA_DEVICE, device.getName() + device.getMajor());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        Log.i( TAG,"Message sent");
-        //sendBroadcast(intent);
+        // For each start request, send a message to start a job and deliver the
+        // start ID so we know which request we're stopping when we finish the job
+        Message msg = mServiceHandler.obtainMessage();
+        msg.obj = device; // CONTAINS ACTION AND BEACON NAME
+        mServiceHandler.sendMessage(msg);
+        //TODO --> if we want to handle different callbacks then we could switch based on msg.arg1
     }
-
 
 
     //<service android:name="service" android:stopWithTask="true"/>
@@ -147,5 +146,22 @@ public class KontaktBackgroundService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    // Handler that receives messages from the thread
+    private final class ServiceHandler extends Handler {
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            IBeaconDevice beacon = (IBeaconDevice) msg.obj;
+            Intent intent = new Intent();
+            intent.setAction(ACTION_BEACON_DISCOVERED);
+            intent.putExtra(EXTRA_DEVICE, beacon.getName() + beacon.getMajor());
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+            Log.i( TAG,"Message sent");
+            //stopSelf(msg.arg1); we dont want to stop the service
+        }
     }
 }

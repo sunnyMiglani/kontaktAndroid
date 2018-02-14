@@ -75,20 +75,7 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(ACTION_BEACON_DISCOVERED));
     }
-/*
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("pressed", );
 
-        // call superclass to save any view hierarchy
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        mTextView.setText(savedInstanceState.getString(TEXT_VIEW_KEY));
-    }
-*/
     // Our handler for received Intents. This will be called whenever an Intent
     // with an action named "custom-event-name" is broadcasted.
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -99,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("receiver", "Got message: " + message);
         }
     };
-
-
+    
     @Override
     protected void onStart() {
 
