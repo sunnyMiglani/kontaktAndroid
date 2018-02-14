@@ -41,11 +41,13 @@ public class MainActivity extends AppCompatActivity {
     // BLE devices (iBeacons, Eddystones and Kontakt.io
     // Beacon Pro secure profiles).
     private ProximityManager proximityManager;
+    private boolean hasBeenClicked = false;
 
     /* Strings used to store intents */
     private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
     private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
     private static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,20 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(ACTION_BEACON_DISCOVERED));
     }
+/*
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("pressed", );
 
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+    }
 
-
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mTextView.setText(savedInstanceState.getString(TEXT_VIEW_KEY));
+    }
+*/
     // Our handler for received Intents. This will be called whenever an Intent
     // with an action named "custom-event-name" is broadcasted.
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -92,10 +105,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
-
         final Button button  = (Button) findViewById(R.id.button);
+      //  final Button button  = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
-            boolean hasBeenClicked = false;
             @Override
             public void onClick(View view) {
                 if(!hasBeenClicked) {
