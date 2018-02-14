@@ -1,13 +1,17 @@
 package com.example.omg.myapplication;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,22 +41,24 @@ public class MainActivity extends AppCompatActivity {
     // BLE devices (iBeacons, Eddystones and Kontakt.io
     // Beacon Pro secure profiles).
     private ProximityManager proximityManager;
+
+    /* Strings used to store intents */
     private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
+    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
+    private static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         KontaktSDK.initialize(this);
 
         setContentView(R.layout.activity_main);
-        checkPermissions();
 
-        proximityManager = ProximityManagerFactory.create(this);
-        proximityManager.setIBeaconListener(createIBeaconListener());
+        checkPermissions();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
 
@@ -64,8 +70,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(ACTION_BEACON_DISCOVERED));
     }
+
+
+
+    // Our handler for received Intents. This will be called whenever an Intent
+    // with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra(EXTRA_DEVICE);
+            Log.d("receiver", "Got message: " + message);
+        }
+    };
+
 
     @Override
     protected void onStart() {
@@ -79,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!hasBeenClicked) {
                     button.setText("Actively searching for beacons!");
-                    startScanning();
+                    startService( new Intent(getApplicationContext(), KontaktBackgroundService.class) );
                     hasBeenClicked = true;
                 }
                 else if(hasBeenClicked){
                     button.setText("Click To Search for Beacons");
+                    stopService(new Intent(getApplicationContext(), KontaktBackgroundService.class));
                     hasBeenClicked = false;
                     onStop();
                 }
@@ -91,51 +113,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         }
-
-    @Override
-    protected void onStop() {
-        if(proximityManager.isScanning())
-            proximityManager.stopScanning();
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        proximityManager.disconnect();
-        proximityManager = null;
-        super.onDestroy();
-    }
-
-    private void startScanning() {
-        proximityManager.connect(new OnServiceReadyListener() {
-            @Override
-            public void onServiceReady() {
-                proximityManager.startScanning();
-            }
-        });
-    }
-
-    private IBeaconListener createIBeaconListener() {
-        return new SimpleIBeaconListener() {
-            @Override //This method is only called on First Discovery
-            public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
-                Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.getName(),
-                        Toast.LENGTH_SHORT).show();
-                Log.i("Sample", "IBeacon discovered: " + ibeacon.getName()+ ibeacon.getMajor());
-
-                Intent intent = new Intent(getApplicationContext(),UnityService.class);
-                //intent.putExtra(EXTRA_BEACON_NAME, ibeacon.getName());
-                intent.putExtra(EXTRA_BEACON_NAME, ibeacon.getName() + ibeacon.getMajor());
-                startService(intent); //Start the service
-            }
-
-            public void onIBeaconLost(IBeaconDevice ibeacon, IBeaconRegion region) {
-                Toast.makeText(getApplicationContext(), "IBeacon Lost: " + ibeacon.getName(),
-                        Toast.LENGTH_SHORT).show();
-                Log.i("Sample", "IBeacon Lost: " + ibeacon.getName());
-            }
-        };
-    }
 
     private void checkPermissions() {
         int checkSelfPermissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
