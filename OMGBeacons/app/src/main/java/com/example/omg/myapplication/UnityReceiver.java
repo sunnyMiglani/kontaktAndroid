@@ -3,7 +3,6 @@ package com.example.omg.myapplication;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
 public class UnityReceiver extends BroadcastReceiver {
 

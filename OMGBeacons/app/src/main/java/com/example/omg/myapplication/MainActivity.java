@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     // BLE devices (iBeacons, Eddystones and Kontakt.io
     // Beacon Pro secure profiles).
     private ProximityManager proximityManager;
-
+    private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +121,12 @@ public class MainActivity extends AppCompatActivity {
             public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
                 Toast.makeText(getApplicationContext(), "IBeacon discovered: " + ibeacon.getName(),
                         Toast.LENGTH_SHORT).show();
-                Log.i("Sample", "IBeacon discovered: " + ibeacon.getName());
-                //TODO Call the service
-                //UnityService.startActionSendUnity(getApplicationContext(),ibeacon.getName());
-                startService( new Intent(getApplicationContext(), UnityService.class) );
+                Log.i("Sample", "IBeacon discovered: " + ibeacon.getName()+ ibeacon.getMajor());
+
+                Intent intent = new Intent(getApplicationContext(),UnityService.class);
+                //intent.putExtra(EXTRA_BEACON_NAME, ibeacon.getName());
+                intent.putExtra(EXTRA_BEACON_NAME, ibeacon.getName() + ibeacon.getMajor());
+                startService(intent); //Start the service
             }
 
             public void onIBeaconLost(IBeaconDevice ibeacon, IBeaconRegion region) {
