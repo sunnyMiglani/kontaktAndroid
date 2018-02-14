@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     // operations connected with ranging and monitoring
     // BLE devices (iBeacons, Eddystones and Kontakt.io
     // Beacon Pro secure profiles).
-    private ProximityManager proximityManager;
     private boolean hasBeenClicked = false;
 
     /* Strings used to store intents */
@@ -84,9 +83,12 @@ public class MainActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra(EXTRA_DEVICE);
             Log.d("receiver", "Got message: " + message);
+            Intent unityIntent = new Intent(getApplicationContext(), UnityService.class);
+            unityIntent.putExtra(EXTRA_BEACON_NAME, message);
+            startService(unityIntent);
         }
     };
-    
+
     @Override
     protected void onStart() {
 

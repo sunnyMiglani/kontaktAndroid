@@ -31,6 +31,8 @@ public class KontaktBackgroundService extends Service {
 
     private static final String TAG = "KontaktBackgroundService";
     private final Handler handler = new Handler();
+
+    //proximity Manager is an entry point for all operations connected with ranging and monitoring BLE devices
     private ProximityManager proximityManager;
     private boolean isRunning; // Flag indicating if service is already running.
     private Looper mServiceLooper;
@@ -114,9 +116,7 @@ public class KontaktBackgroundService extends Service {
         // TODO --> We can add any other useful callbacks here.
     }
 
-    /* Strings used to store intents */
-    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
-    private static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
+
 
     /* This method implements the behavior that we desire when a
     *  beacon has been discovered by the system */
@@ -148,6 +148,11 @@ public class KontaktBackgroundService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /* Strings used to store intents */
+    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
+    private static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
+    private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
+
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper) {
@@ -161,7 +166,7 @@ public class KontaktBackgroundService extends Service {
             intent.putExtra(EXTRA_DEVICE, beacon.getName() + beacon.getMajor());
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             Log.i( TAG,"Message sent");
-            //stopSelf(msg.arg1); we dont want to stop the service
+            //stopSelf(msg.arg1); we don't want to stop the service
         }
     }
 }

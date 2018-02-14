@@ -125,6 +125,8 @@ public class UnityService extends Service {
     private ServiceHandler mServiceHandler;
     private static final String ACTION_SEND_UNITY = "com.example.omg.myapplication.action.SEND_UNITY";
     private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
+    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
+
     private int counter = 0;
 
     // Handler that receives messages from the thread
@@ -139,6 +141,8 @@ public class UnityService extends Service {
             sendIntent.setAction(ACTION_SEND_UNITY);
             sendIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_FROM_BACKGROUND|Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             sendIntent.putExtra(EXTRA_BEACON_NAME, thisIntent.getStringExtra(EXTRA_BEACON_NAME));
+            //sendIntent.putExtra(EXTRA_BEACON_NAME, thisIntent.getStringExtra(EXTRA_DEVICE));
+
             //thisIntent.setAction(ACTION_SEND_UNITY); //Set the action of the intent
             //thisIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_FROM_BACKGROUND|Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             sendBroadcast(sendIntent);
