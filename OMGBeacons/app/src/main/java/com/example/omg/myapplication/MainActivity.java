@@ -155,4 +155,12 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onDestroy()
+    {
+        stopService(new Intent(getApplicationContext(), KontaktBackgroundService.class));
+        stopService(new Intent(getApplicationContext(), UnityService.class));
+        Log.i("Destroy", "Service destroyed" + MainActivity.class);
+        super.onDestroy();
+    }
 }
