@@ -139,6 +139,7 @@ public class KontaktBackgroundService extends Service {
             proximityManager = null;
         }
         Toast.makeText(KontaktBackgroundService.this, "Scanning service stopped.", Toast.LENGTH_SHORT).show();
+        Log.i("Destroy", "Service destroyed" + KontaktBackgroundService.class);
         super.onDestroy();
         //TODO stop the thread
     }

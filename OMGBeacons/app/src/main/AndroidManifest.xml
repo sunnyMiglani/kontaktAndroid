@@ -18,10 +18,12 @@
         <service
             android:name=".UnityService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:stopWithTask="true"/>
         <service
             android:name="com.kontakt.sdk.android.ble.service.ProximityService"
-            android:exported="false" />
+            android:exported="false"
+            android:stopWithTask="true"/>
         <!-- Not clear if the receiver needs to be registered here aswell?? -->
         <receiver
             android:name=".UnityReceiver"

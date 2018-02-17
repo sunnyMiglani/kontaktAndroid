@@ -34,12 +34,10 @@ import com.kontakt.sdk.android.common.profile.IBeaconRegion;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int MY_REQ_FINE_LOC = 1234;
+    //A number we create to request permissions
+    private static final int MY_REQ_FINE_LOC = 1234;
 
-    // Proximity Manager is an entry point for all
-    // operations connected with ranging and monitoring
-    // BLE devices (iBeacons, Eddystones and Kontakt.io
-    // Beacon Pro secure profiles).
+    //Button functionality
     private boolean hasBeenClicked = false;
 
     /* Strings used to store intents */
@@ -51,13 +49,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         KontaktSDK.initialize(this);
-
         setContentView(R.layout.activity_main);
-
         checkPermissions();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -75,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 new IntentFilter(ACTION_BEACON_DISCOVERED));
     }
 
-    // Our handler for received Intents. This will be called whenever an Intent
-    // with an action named "custom-event-name" is broadcasted.
+
+    /* Receives broadcasts from KontaktBackgroundScan
+    *  then subsequently broadcasts them (globally) to UnityReceiver */
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String message = intent.getStringExtra(EXTRA_DEVICE);
+            String message = intent.getStringExtra(EXTRA_DEVICE); // Get extra data included in the Intent
             Log.d("receiver", "Got message: " + message);
             Intent unityIntent = new Intent(getApplicationContext(), UnityService.class);
             unityIntent.putExtra(EXTRA_BEACON_NAME, message);
@@ -91,10 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-
         super.onStart();
         final Button button  = (Button) findViewById(R.id.button);
-      //  final Button button  = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        }
-
+    /* Check the permissions of the device, and request them if necessary */
     private void checkPermissions() {
         int checkSelfPermissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (PackageManager.PERMISSION_GRANTED != checkSelfPermissionResult) {
