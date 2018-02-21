@@ -164,7 +164,8 @@ public class KontaktBackgroundService extends Service {
             IBeaconDevice beacon = (IBeaconDevice) msg.obj;
             Intent intent = new Intent();
             intent.setAction(ACTION_BEACON_DISCOVERED);
-            intent.putExtra(EXTRA_DEVICE, beacon.getName() + beacon.getMajor() + (beacon.getDistance()));
+            //intent.putExtra(EXTRA_DEVICE, beacon.getName() + beacon.getMajor() + (beacon.getDistance()));
+            intent.putExtra(EXTRA_DEVICE, Integer.toString(beacon.getMajor()));
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             Log.i( TAG,"Message sent");
             //stopSelf(msg.arg1); we don't want to stop the service
