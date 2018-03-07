@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasBeenClicked = false;
 
     /* Strings used to store intents */
-    private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
-    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
-    private static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
+    public static final String EXTRA_BEACON_NAME        = "com.example.omg.myapplication.extra.BEACON_NAME";
+    public static final String EXTRA_DEVICE             = "com.example.omg.myapplication.extra.DEVICE";
+    public static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
+    public static final String ACTION_SEND_UNITY        = "com.example.omg.myapplication.action.SEND_UNITY";
 
 
     @Override

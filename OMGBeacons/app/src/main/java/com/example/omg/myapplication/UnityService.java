@@ -11,14 +11,13 @@ import android.util.Log;
 import android.widget.Toast;
 import android.os.Process;
 
+import static com.example.omg.myapplication.MainActivity.EXTRA_BEACON_NAME;
+import static com.example.omg.myapplication.MainActivity.ACTION_SEND_UNITY;
+
 public class UnityService extends Service {
 
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
-    private static final String ACTION_SEND_UNITY = "com.example.omg.myapplication.action.SEND_UNITY";
-    private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
-    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
-
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
@@ -27,12 +26,13 @@ public class UnityService extends Service {
         }
         @Override
         public void handleMessage(Message msg) {
-            Intent thisIntent = (Intent) msg.obj; //Have to typecast this for sum reason void*?
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(ACTION_SEND_UNITY);
+            Intent thisIntent = (Intent) msg.obj; //Get the message object
+            Intent sendIntent = new Intent(); //Create a new intent
+            sendIntent.setAction(ACTION_SEND_UNITY); //Set the action
             sendIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_FROM_BACKGROUND|Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             sendIntent.putExtra(EXTRA_BEACON_NAME, thisIntent.getStringExtra(EXTRA_BEACON_NAME));
-            sendBroadcast(sendIntent);
+            sendBroadcast(sendIntent); //Send the (Global) broadcast to unity
+            Log.i( "UnityService.class","Message sent to unity");
             stopSelf(msg.arg1);
         }
     }
@@ -44,7 +44,7 @@ public class UnityService extends Service {
         // main thread, which we don't want to block.  We also make it
         // background priority so CPU-intensive work will not disrupt our UI.
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
-                Process.THREAD_PRIORITY_BACKGROUND);
+                Process.THREAD_PRIORITY_BACKGROUND); //TODO is this priority correct?
         thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
@@ -54,7 +54,7 @@ public class UnityService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service Starting", Toast.LENGTH_SHORT).show();
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
@@ -76,7 +76,7 @@ public class UnityService extends Service {
     @Override
     public void onDestroy()
     {
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
         Log.i("Destroy", "Service destroyed" + UnityService.class);
         super.onDestroy();
     }

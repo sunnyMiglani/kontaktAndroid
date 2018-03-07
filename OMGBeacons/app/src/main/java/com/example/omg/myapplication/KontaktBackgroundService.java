@@ -21,6 +21,9 @@ import com.kontakt.sdk.android.ble.manager.listeners.IBeaconListener;
 import com.kontakt.sdk.android.ble.manager.listeners.simple.SimpleIBeaconListener;
 import com.kontakt.sdk.android.common.profile.IBeaconDevice;
 import com.kontakt.sdk.android.common.profile.IBeaconRegion;
+import static com.example.omg.myapplication.MainActivity.ACTION_BEACON_DISCOVERED;
+import static com.example.omg.myapplication.MainActivity.EXTRA_DEVICE;
+
 
 
 /* Service that implements a background scan for Kontakt beacons.
@@ -48,11 +51,10 @@ public class KontaktBackgroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         /* Create a new thread that runs in the background, this
          * will perform the work that we want the service to implement */
         HandlerThread thread = new HandlerThread("BeaconScanService",
-                Process.THREAD_PRIORITY_BACKGROUND);
+                Process.THREAD_PRIORITY_DEFAULT);
         thread.start(); //Start the thread
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(mServiceLooper);
@@ -110,7 +112,7 @@ public class KontaktBackgroundService extends Service {
             @Override
             public void onIBeaconDiscovered(IBeaconDevice ibeacon, IBeaconRegion region) {
                 onDeviceDiscovered(ibeacon); //When a beacon is found
-                Log.i(TAG, "onIBeaconDiscovered: " + ibeacon.toString());
+                Log.i(TAG, "BEACON DISCOVERED: " + ibeacon.toString());
             }
         };
         // TODO --> We can add any other useful callbacks here.
@@ -148,11 +150,6 @@ public class KontaktBackgroundService extends Service {
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
-    /* Strings used to store intents */
-    private static final String EXTRA_DEVICE = "com.example.omg.myapplication.extra.DEVICE";
-    private static final String ACTION_BEACON_DISCOVERED = "com.example.omg.myapplication.action.BEACON_DISCOVERED";
-    private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
