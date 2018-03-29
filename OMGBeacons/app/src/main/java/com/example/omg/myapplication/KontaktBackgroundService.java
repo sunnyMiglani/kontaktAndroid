@@ -127,6 +127,7 @@ public class KontaktBackgroundService extends Service {
         // start ID so we know which request we're stopping when we finish the job
         Message msg = mServiceHandler.obtainMessage();
         msg.obj = device; // CONTAINS ACTION AND BEACON NAME
+        Toast.makeText(KontaktBackgroundService.this, "FOUND : B " + device.getMajor(), Toast.LENGTH_SHORT).show();
         mServiceHandler.sendMessage(msg);
         //TODO --> if we want to handle different callbacks then we could switch based on msg.arg1
     }
