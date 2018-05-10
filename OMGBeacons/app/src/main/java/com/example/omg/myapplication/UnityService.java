@@ -44,7 +44,7 @@ public class UnityService extends Service {
         // main thread, which we don't want to block.  We also make it
         // background priority so CPU-intensive work will not disrupt our UI.
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
-                Process.THREAD_PRIORITY_BACKGROUND); //TODO is this priority correct?
+                Process.THREAD_PRIORITY_DEFAULT); //TODO is this priority correct?
         thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
@@ -54,8 +54,6 @@ public class UnityService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Service Starting", Toast.LENGTH_SHORT).show();
-
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
         Message msg = mServiceHandler.obtainMessage();
@@ -76,7 +74,6 @@ public class UnityService extends Service {
     @Override
     public void onDestroy()
     {
-        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
         Log.i("Destroy", "Service destroyed" + UnityService.class);
         super.onDestroy();
     }
