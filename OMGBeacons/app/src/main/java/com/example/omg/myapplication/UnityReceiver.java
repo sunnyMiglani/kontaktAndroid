@@ -9,7 +9,6 @@ public class UnityReceiver extends BroadcastReceiver {
     private static UnityReceiver instance;
     private static final String EXTRA_BEACON_NAME = "com.example.omg.myapplication.extra.BEACON_NAME";
     public static String intentMessage = "EMPTYMESSAGE";
-    public static int called = 0;
 
 
     public UnityReceiver() {
@@ -17,7 +16,6 @@ public class UnityReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        called++;
         String receiveString = intent.getStringExtra(EXTRA_BEACON_NAME); /* Retrieve extended data from the intent. */
         if (receiveString != null) {
             // We assigned it to our static variable
