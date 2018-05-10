@@ -1,3 +1,14 @@
+
+# Repository Information
+
+Repository is dedicated to the development of an android application to support a game called "Murder on the Orient Express".
+The app communicates with the Kontakt API for Eddystone/IBeacon based BLE Beacons.
+
+We expose variables to the JNI interface to be grabbed by the game mentioned above once they're both running on the same android phone.
+Most of the development of this app has been done by Sydney Dimmock.
+
+
+
 # Beacon Information
 
 Using this to document useful information/features of the Kontakt beacons.
