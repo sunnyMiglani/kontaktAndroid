@@ -7,6 +7,9 @@ The app communicates with the Kontakt API for Eddystone/IBeacon based BLE Beacon
 We expose variables to the JNI interface to be grabbed by the game mentioned above once they're both running on the same android phone.
 Most of the development of this app has been done by Sydney Dimmock.
 
+# Debug information
+
+If the project doesn't compile on gradle due to a missing dependency for a `commons-math3` file, you can download and place the file [from this website](https://jar-download.com/artifacts/org.apache.commons/commons-math3/3.6.1/source-code)
 
 
 # Beacon Information
